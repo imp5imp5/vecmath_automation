@@ -72,7 +72,7 @@ def request_version():
 
 v = request_version()
 while True:
-  time.sleep(5)
+  time.sleep(6)
   cur_v = request_version()
   if cur_v != v:
     v = cur_v
