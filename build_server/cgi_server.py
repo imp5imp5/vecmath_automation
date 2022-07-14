@@ -14,11 +14,11 @@ class HTTPPostHandler(CGIHTTPServer.CGIHTTPRequestHandler):
     fname = str(int(self.path[1:]))
     content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
     post_data = self.rfile.read(content_length) # <--- Gets the data itself
-    print("POST request,\nPath: " + str(self.path) + "\nHeaders:\n" + str(self.headers) + "\n\nBody:\n" + post_data.decode('utf-8') + "\n")
+    print("POST request,\nPath: " + str(self.path) + "\nHeaders:\n" + str(self.headers) + "\n\nBody:\n" + post_data.decode(encoding = 'ascii', errors='backslashreplace') + "\n")
     self._set_response()
-    self.wfile.write("POST request for {}".format(self.path).encode('utf-8'))
+    self.wfile.write("POST request for {}".format(self.path).encode(encoding = 'ascii', errors='backslashreplace'))
     with open('test_logs/' + fname + ".txt" , 'wt') as f:
-      f.write(post_data.decode('utf-8'))
+      f.write(post_data.decode(encoding = 'ascii', errors='backslashreplace'))
 
 
 
