@@ -42,17 +42,28 @@ def exe(s):
 def build():
   print("Worker ID: " + get_worker_id())
   os.system("echo \"\\nBuild Start\\n\"")
-  os.system("date > " + logfile)
 
   if platform == "win32":
+    os.system("rd /s/q vecmath_test")
+    os.system("date /T > " + logfile)
     exe("echo %PROCESSOR_IDENTIFIER%")
   else:
+    shutil.rmtree('./vecmath_test', ignore_errors=True)
+    os.system("date > " + logfile)
     exe("lscpu")
 
-  shutil.rmtree('./vecmath_test', ignore_errors=True)
+
   exe("git clone https://github.com/imp5imp5/vecmath_test.git")
-  exe("cd vecmath_test && mkdir build && cd build && cmake .. " + redirect +
-    " && cmake --build . " + redirect + " && ./vecmath_test " + redirect + " && cd .. && cd ..")
+  exe("cd vecmath_test && mkdir build && cd build")
+  exe("cmake .. " + redirect)
+  exe("cmake --build . --target vecmath_test --config Release " + redirect)
+
+  if platform == "win32":
+    exe("./Release/vecmath_test.exe " + redirect)
+  else:
+    exe("./vecmath_test " + redirect)
+
+  exe("cd .. && cd ..")
   send_log_to_server()
   os.system("echo \"\\nBuild Done\\n\"")
 
