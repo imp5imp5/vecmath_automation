@@ -54,14 +54,18 @@ def build():
 
 
   exe("git clone https://github.com/imp5imp5/vecmath_test.git")
-  exe("cd vecmath_test && mkdir build && cd build && cmake .. " + redirect +
-      " && cmake --build . --target vecmath_test --config Release " + redirect + " && cd .. && cd ..")
 
   if platform == "win32":
+    exe("cd vecmath_test && mkdir build && cd build && cmake .. " + redirect +
+        " && cmake --build . --target vecmath_test --config Release " + redirect + " && cd .. && cd ..")
     exe("vecmath_test\\build\\Release\\vecmath_test.exe " + redirect)
   else:
+    exe("cd vecmath_test && mkdir build && cd build && cmake .. " + redirect +
+        " && cmake --build . --target vecmath_test --config Release " + redirect + " && cd .. && cd ..")
     exe("./vecmath_test/build/vecmath_test " + redirect)
+    exe("stdbuf -oL echo \" \n\" " + redirect) # flush
 
+  time.sleep(3)
   send_log_to_server()
   os.system("echo \"\\nBuild Done\\n\"")
 
